@@ -13,9 +13,18 @@ const formtTime = (time) => {
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}:${hundreths.toString().padStart(2, '0')}`;
 }
 
+const addMarkToList = (markIndex, markTime) => {
+    marks.List.innerHTML += `<p>Marca ${markIndex}: ${formtTime(markTime)}</p>`
+}
+
+const markTime = () => {
+    marks.push(timer);
+    addMarkToList(marks.length, timer);
+}
+
 const toggleTimer = () => {
     const button = document.getElementById('power');
-    const action = document.getElementById('action')
+    const action = button.getElementById('action');
 
     clearInterval(intervalId);
 
@@ -32,8 +41,21 @@ const toggleTimer = () => {
     }
 }
 
+const resetTimer = () => {
+    clearInterval(intervalId);
+    timer = 0;
+    marks = [];
+    setTimer(timer);
+    marksList.innerHTML = '';
+    const button = document.getElementById('power');
+    button.getElementById('action', 'start');
+    button.innerHTML = '<i class="fa-solid fa-play"></i>'
+}
+
 const setTimer = (time) => {
     timerEl.innerText = formtTime(time);
 }
 
 document.getElementById('power').addEventListener('click', toggleTimer);
+document.getElementById('mark').addEventListener('click', markTime);
+document.getElementById('reset').addEventListener('click', resetTimer);
